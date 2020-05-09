@@ -1,27 +1,63 @@
 # ImportReadJsonFiles
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
+## Overview
 
-## Development server
+This project basically demonstrates that **how we can import/read local json file in angular.** Well There are **atleast 3 ways to do this.**
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## First Way
 
-## Code scaffolding
+**TypeScript 2.9>=** versions allow us to set configurations in `tsconfig.json` file for importing json file like
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+{
+  ...,
+  "compilerOptions": {
+    ...,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  }
+}
 
-## Build
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Now you can import json file in your component like
 
-## Running unit tests
+```
+import data from '../../assets/json/data.json';
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
 
-## Running end-to-end tests
+## Second Way
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Without extra typescript configurations, You can make http request to get your json file in your component/service like
 
-## Further help
+```
+this.httpClient.get('assets/json/data.json').subscribe((data) => {
+    this.jsonDataResult = data;
+    console.log('--- Second Way of jsonDataResult :: ', this.jsonDataResult);
+});
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```
+
+## Third Way
+
+Without extra typescript configurations, You can define it's **\*.d.ts** where your local json file stored. It's code looks like
+
+```
+declare module '*.json' {
+  const value: any;
+  export default value;
+}
+
+```
+
+Now you can import json file in your component like
+
+```
+import * as data from '../../assets/json/data.json';
+// OR Import it like
+// import data from '../../assets/json/data.json';
+
+```
+
+## That's it!! :relaxed:
